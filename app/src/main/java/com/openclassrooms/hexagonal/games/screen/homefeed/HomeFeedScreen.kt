@@ -54,6 +54,7 @@ fun HomeFeedScreen(
     viewModel: HomeFeedViewModel = hiltViewModel(),
     onPostClick: (Post) -> Unit = {},
     onSettingsClick: () -> Unit = {},
+    onAccountClick: () -> Unit = {},
     onFABClick: () -> Unit = {},
 ) {
     var showMenu by rememberSaveable { mutableStateOf(false) }
@@ -86,6 +87,16 @@ fun HomeFeedScreen(
                                 )
                             }
                         )
+                        DropdownMenuItem(
+                            onClick = {
+                                onAccountClick()
+                            },
+                            text = {
+                                Text(
+                                    text = stringResource(id = R.string.my_account)
+                                )
+                            }
+                        )
                     }
                 }
             )
@@ -106,7 +117,7 @@ fun HomeFeedScreen(
     ) { contentPadding ->
         val posts by viewModel.posts.collectAsStateWithLifecycle()
 
-        HomefeedList(
+        HomeFeedList(
             modifier = modifier.padding(contentPadding),
             posts = posts,
             onPostClick = onPostClick
@@ -115,7 +126,7 @@ fun HomeFeedScreen(
 }
 
 @Composable
-private fun HomefeedList(
+private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
     onPostClick: (Post) -> Unit,
@@ -125,7 +136,7 @@ private fun HomefeedList(
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(posts) { post ->
-            HomefeedCell(
+            HomeFeedCell(
                 post = post,
                 onPostClick = onPostClick
             )
@@ -134,7 +145,7 @@ private fun HomefeedList(
 }
 
 @Composable
-private fun HomefeedCell(
+private fun HomeFeedCell(
     post: Post,
     onPostClick: (Post) -> Unit,
 ) {
@@ -158,7 +169,7 @@ private fun HomefeedCell(
                 text = post.title,
                 style = MaterialTheme.typography.titleLarge
             )
-            if (post.photoUrl.isNullOrEmpty() == false) {
+            if (!post.photoUrl.isNullOrEmpty()) {
                 AsyncImage(
                     modifier = Modifier
                         .padding(top = 8.dp)
@@ -174,7 +185,7 @@ private fun HomefeedCell(
                     contentScale = ContentScale.Crop,
                 )
             }
-            if (post.description.isNullOrEmpty() == false) {
+            if (!post.description.isNullOrEmpty()) {
                 Text(
                     text = post.description,
                     style = MaterialTheme.typography.bodyMedium
@@ -184,12 +195,13 @@ private fun HomefeedCell(
     }
 }
 
+
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
-private fun HomefeedCellPreview() {
+private fun HomeFeedCellPreview() {
     HexagonalGamesTheme {
-        HomefeedCell(
+        HomeFeedCell(
             post = Post(
                 id = "1",
                 title = "title",
@@ -210,9 +222,9 @@ private fun HomefeedCellPreview() {
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
-private fun HomefeedCellImagePreview() {
+private fun HomeFeedCellImagePreview() {
     HexagonalGamesTheme {
-        HomefeedCell(
+        HomeFeedCell(
             post = Post(
                 id = "1",
                 title = "title",

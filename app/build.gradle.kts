@@ -5,6 +5,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.googleServices)
     alias(libs.plugins.composeCompiler)
+    alias(libs.plugins.crashlytics)
 }
 
 android {
@@ -78,7 +79,14 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+
     //Firebase
     implementation(platform(libs.firebase.bom))
+
+    //Analytics
     implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+
+    //Authentication
+    implementation(libs.firebase.ui.auth)
 }

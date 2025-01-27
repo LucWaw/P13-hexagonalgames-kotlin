@@ -14,4 +14,9 @@
     <string name="contentDescription_more">Plus</string>
     <string name="contentDescription_notification_icon">Notification icon</string>
     <string name="error_title">Titre non valide</string>
+    <string name="my_account">Mon compte</string>
+    <string name="sign_in">Se connecter</string>
+    <string name="network_error">Erreur de réseau, vérifiez votre connexion Internet.</string>
+    <string name="unknow_error">Une erreur inconnue s\'est produite.</string>
+    <string name="SuccessfulConnexion">Connexion Réussie</string>
 </resources>

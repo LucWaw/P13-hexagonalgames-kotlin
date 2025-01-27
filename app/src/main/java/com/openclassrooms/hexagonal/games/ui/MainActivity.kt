@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.hexagonal.games.screen.Screen
+import com.openclassrooms.hexagonal.games.screen.account.AccountScreen
 import com.openclassrooms.hexagonal.games.screen.add.AddScreen
 import com.openclassrooms.hexagonal.games.screen.homefeed.HomeFeedScreen
 import com.openclassrooms.hexagonal.games.screen.settings.SettingsScreen
@@ -24,7 +25,6 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         setContent {
             val navController = rememberNavController()
 
@@ -50,6 +50,9 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
                 onSettingsClick = {
                     navHostController.navigate(Screen.Settings.route)
                 },
+                onAccountClick = {
+                    navHostController.navigate(Screen.Account.route)
+                },
                 onFABClick = {
                     navHostController.navigate(Screen.AddPost.route)
                 }
@@ -63,6 +66,11 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
         }
         composable(route = Screen.Settings.route) {
             SettingsScreen(
+                onBackClick = { navHostController.navigateUp() }
+            )
+        }
+        composable(route = Screen.Account.route) {
+            AccountScreen(
                 onBackClick = { navHostController.navigateUp() }
             )
         }
