@@ -35,140 +35,140 @@ import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddScreen(
-  modifier: Modifier = Modifier,
-  viewModel: AddViewModel = hiltViewModel(),
-  onBackClick: () -> Unit,
-  onSaveClick: () -> Unit
+    modifier: Modifier = Modifier,
+    viewModel: AddViewModel = hiltViewModel(),
+    onBackClick: () -> Unit,
+    onSaveClick: () -> Unit
 ) {
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      TopAppBar(
-        title = {
-          Text(stringResource(id = R.string.add_fragment_label))
-        },
-        navigationIcon = {
-          IconButton(onClick = {
-            onBackClick()
-          }) {
-            Icon(
-              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = stringResource(id = R.string.contentDescription_go_back)
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(stringResource(id = R.string.add_fragment_label))
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onBackClick()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(id = R.string.contentDescription_go_back)
+                        )
+                    }
+                }
             )
-          }
         }
-      )
+    ) { contentPadding ->
+        val post by viewModel.post.collectAsStateWithLifecycle()
+        val error by viewModel.error.collectAsStateWithLifecycle()
+
+        CreatePost(
+            modifier = Modifier.padding(contentPadding),
+            error = error,
+            title = post.title,
+            onTitleChanged = { viewModel.onAction(FormEvent.TitleChanged(it)) },
+            description = post.description ?: "",
+            onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
+            onSaveClicked = {
+                viewModel.addPost()
+                onSaveClick()
+            }
+        )
     }
-  ) { contentPadding ->
-    val post by viewModel.post.collectAsStateWithLifecycle()
-    val error by viewModel.error.collectAsStateWithLifecycle()
-    
-    CreatePost(
-      modifier = Modifier.padding(contentPadding),
-      error = error,
-      title = post.title,
-      onTitleChanged = { viewModel.onAction(FormEvent.TitleChanged(it)) },
-      description = post.description ?: "",
-      onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
-      onSaveClicked = {
-        viewModel.addPost()
-        onSaveClick()
-      }
-    )
-  }
 }
 
 @Composable
 private fun CreatePost(
-  modifier: Modifier = Modifier,
-  title: String,
-  onTitleChanged: (String) -> Unit,
-  description: String,
-  onDescriptionChanged: (String) -> Unit,
-  onSaveClicked: () -> Unit,
-  error: FormError?
+    modifier: Modifier = Modifier,
+    title: String,
+    onTitleChanged: (String) -> Unit,
+    description: String,
+    onDescriptionChanged: (String) -> Unit,
+    onSaveClicked: () -> Unit,
+    error: FormError?
 ) {
-  val scrollState = rememberScrollState()
-  
-  Column(
-    modifier = modifier
-      .padding(16.dp)
-      .fillMaxSize(),
-    horizontalAlignment = Alignment.CenterHorizontally
-  ) {
+    val scrollState = rememberScrollState()
+
     Column(
-      modifier = modifier
-        .fillMaxSize()
-        .weight(1f)
-        .verticalScroll(scrollState)
+        modifier = modifier
+            .padding(16.dp)
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-      OutlinedTextField(
-        modifier = Modifier
-          .padding(top = 16.dp)
-          .fillMaxWidth(),
-        value = title,
-        isError = error is FormError.TitleError,
-        onValueChange = { onTitleChanged(it) },
-        label = { Text(stringResource(id = R.string.hint_title)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-        singleLine = true
-      )
-      if (error is FormError.TitleError) {
-        Text(
-          text = stringResource(id = error.messageRes),
-          color = MaterialTheme.colorScheme.error,
-        )
-      }
-      OutlinedTextField(
-        modifier = Modifier
-          .padding(top = 16.dp)
-          .fillMaxWidth(),
-        value = description,
-        onValueChange = { onDescriptionChanged(it) },
-        label = { Text(stringResource(id = R.string.hint_description)) },
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
-      )
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .weight(1f)
+                .verticalScroll(scrollState)
+        ) {
+            OutlinedTextField(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+                value = title,
+                isError = error is FormError.TitleError,
+                onValueChange = { onTitleChanged(it) },
+                label = { Text(stringResource(id = R.string.hint_title)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                singleLine = true
+            )
+            if (error is FormError.TitleError) {
+                Text(
+                    text = stringResource(id = error.messageRes),
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+            OutlinedTextField(
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .fillMaxWidth(),
+                value = description,
+                onValueChange = { onDescriptionChanged(it) },
+                label = { Text(stringResource(id = R.string.hint_description)) },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
+            )
+        }
+        Button(
+            enabled = error == null,
+            onClick = { onSaveClicked() }
+        ) {
+            Text(
+                modifier = Modifier.padding(8.dp),
+                text = stringResource(id = R.string.action_save)
+            )
+        }
     }
-    Button(
-      enabled = error == null,
-      onClick = { onSaveClicked() }
-    ) {
-      Text(
-        modifier = Modifier.padding(8.dp),
-        text = stringResource(id = R.string.action_save)
-      )
-    }
-  }
 }
 
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
 private fun CreatePostPreview() {
-  HexagonalGamesTheme {
-    CreatePost(
-      title = "test",
-      onTitleChanged = { },
-      description = "description",
-      onDescriptionChanged = { },
-      onSaveClicked = { },
-      error = null
-    )
-  }
+    HexagonalGamesTheme {
+        CreatePost(
+            title = "test",
+            onTitleChanged = { },
+            description = "description",
+            onDescriptionChanged = { },
+            onSaveClicked = { },
+            error = null
+        )
+    }
 }
 
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
 private fun CreatePostErrorPreview() {
-  HexagonalGamesTheme {
-    CreatePost(
-      title = "test",
-      onTitleChanged = { },
-      description = "description",
-      onDescriptionChanged = { },
-      onSaveClicked = { },
-      error = FormError.TitleError
-    )
-  }
+    HexagonalGamesTheme {
+        CreatePost(
+            title = "test",
+            onTitleChanged = { },
+            description = "description",
+            onDescriptionChanged = { },
+            onSaveClicked = { },
+            error = FormError.TitleError
+        )
+    }
 }

@@ -34,95 +34,95 @@ import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreen(
-  modifier: Modifier = Modifier,
-  viewModel: SettingsViewModel = hiltViewModel(),
-  onBackClick: () -> Unit
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = hiltViewModel(),
+    onBackClick: () -> Unit
 ) {
-  Scaffold(
-    modifier = modifier,
-    topBar = {
-      TopAppBar(
-        title = {
-          Text(stringResource(id = R.string.action_settings))
-        },
-        navigationIcon = {
-          IconButton(onClick = {
-            onBackClick()
-          }) {
-            Icon(
-              imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-              contentDescription = stringResource(id = R.string.contentDescription_go_back)
+    Scaffold(
+        modifier = modifier,
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(stringResource(id = R.string.action_settings))
+                },
+                navigationIcon = {
+                    IconButton(onClick = {
+                        onBackClick()
+                    }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = stringResource(id = R.string.contentDescription_go_back)
+                        )
+                    }
+                }
             )
-          }
         }
-      )
+    ) { contentPadding ->
+        Settings(
+            modifier = Modifier.padding(contentPadding),
+            onNotificationDisabledClicked = { viewModel.disableNotifications() },
+            onNotificationEnabledClicked = {
+                viewModel.enableNotifications()
+            }
+        )
     }
-  ) { contentPadding ->
-    Settings(
-      modifier = Modifier.padding(contentPadding),
-      onNotificationDisabledClicked = { viewModel.disableNotifications() },
-      onNotificationEnabledClicked = {
-        viewModel.enableNotifications()
-      }
-    )
-  }
 }
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
 private fun Settings(
-  modifier: Modifier = Modifier,
-  onNotificationEnabledClicked: () -> Unit,
-  onNotificationDisabledClicked: () -> Unit
+    modifier: Modifier = Modifier,
+    onNotificationEnabledClicked: () -> Unit,
+    onNotificationDisabledClicked: () -> Unit
 ) {
-  val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-    rememberPermissionState(
-      android.Manifest.permission.POST_NOTIFICATIONS
-    )
-  } else {
-    null
-  }
-  
-  Column(
-    modifier = Modifier.fillMaxSize(),
-    horizontalAlignment = Alignment.CenterHorizontally,
-    verticalArrangement = Arrangement.SpaceEvenly
-  ) {
-    Icon(
-      modifier = Modifier.size(200.dp),
-      painter = painterResource(id = R.drawable.ic_notifications),
-      tint = MaterialTheme.colorScheme.onSurface,
-      contentDescription = stringResource(id = R.string.contentDescription_notification_icon)
-    )
-    Button(
-      onClick = {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-          if (notificationsPermissionState?.status?.isGranted == false) {
-            notificationsPermissionState.launchPermissionRequest()
-          }
+    val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        rememberPermissionState(
+            android.Manifest.permission.POST_NOTIFICATIONS
+        )
+    } else {
+        null
+    }
+
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.SpaceEvenly
+    ) {
+        Icon(
+            modifier = Modifier.size(200.dp),
+            painter = painterResource(id = R.drawable.ic_notifications),
+            tint = MaterialTheme.colorScheme.onSurface,
+            contentDescription = stringResource(id = R.string.contentDescription_notification_icon)
+        )
+        Button(
+            onClick = {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    if (notificationsPermissionState?.status?.isGranted == false) {
+                        notificationsPermissionState.launchPermissionRequest()
+                    }
+                }
+
+                onNotificationEnabledClicked()
+            }
+        ) {
+            Text(text = stringResource(id = R.string.notification_enable))
         }
-        
-        onNotificationEnabledClicked()
-      }
-    ) {
-      Text(text = stringResource(id = R.string.notification_enable))
+        Button(
+            onClick = { onNotificationDisabledClicked() }
+        ) {
+            Text(text = stringResource(id = R.string.notification_disable))
+        }
     }
-    Button(
-      onClick = { onNotificationDisabledClicked() }
-    ) {
-      Text(text = stringResource(id = R.string.notification_disable))
-    }
-  }
 }
 
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
 private fun SettingsPreview() {
-  HexagonalGamesTheme {
-    Settings(
-      onNotificationEnabledClicked = { },
-      onNotificationDisabledClicked = { }
-    )
-  }
+    HexagonalGamesTheme {
+        Settings(
+            onNotificationEnabledClicked = { },
+            onNotificationDisabledClicked = { }
+        )
+    }
 }

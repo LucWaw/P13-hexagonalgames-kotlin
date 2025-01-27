@@ -21,50 +21,50 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-  
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-    
-    setContent {
-      val navController = rememberNavController()
-      
-      HexagonalGamesTheme {
-        HexagonalGamesNavHost(navHostController = navController)
-      }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        setContent {
+            val navController = rememberNavController()
+
+            HexagonalGamesTheme {
+                HexagonalGamesNavHost(navHostController = navController)
+            }
+        }
     }
-  }
-  
+
 }
 
 @Composable
 fun HexagonalGamesNavHost(navHostController: NavHostController) {
-  NavHost(
-    navController = navHostController,
-    startDestination = Screen.Homefeed.route
-  ) {
-    composable(route = Screen.Homefeed.route) {
-      HomefeedScreen(
-        onPostClick = {
-          //TODO
-        },
-        onSettingsClick = {
-          navHostController.navigate(Screen.Settings.route)
-        },
-        onFABClick = {
-          navHostController.navigate(Screen.AddPost.route)
+    NavHost(
+        navController = navHostController,
+        startDestination = Screen.Homefeed.route
+    ) {
+        composable(route = Screen.Homefeed.route) {
+            HomefeedScreen(
+                onPostClick = {
+                    //TODO
+                },
+                onSettingsClick = {
+                    navHostController.navigate(Screen.Settings.route)
+                },
+                onFABClick = {
+                    navHostController.navigate(Screen.AddPost.route)
+                }
+            )
         }
-      )
+        composable(route = Screen.AddPost.route) {
+            AddScreen(
+                onBackClick = { navHostController.navigateUp() },
+                onSaveClick = { navHostController.navigateUp() }
+            )
+        }
+        composable(route = Screen.Settings.route) {
+            SettingsScreen(
+                onBackClick = { navHostController.navigateUp() }
+            )
+        }
     }
-    composable(route = Screen.AddPost.route) {
-      AddScreen(
-        onBackClick = { navHostController.navigateUp() },
-        onSaveClick = { navHostController.navigateUp() }
-      )
-    }
-    composable(route = Screen.Settings.route) {
-      SettingsScreen(
-        onBackClick = { navHostController.navigateUp() }
-      )
-    }
-  }
 }

@@ -14,22 +14,22 @@ import javax.inject.Singleton
  */
 @Singleton
 class PostRepository @Inject constructor(private val postApi: PostApi) {
-  
-  /**
-   * Retrieves a Flow object containing a list of Posts ordered by creation date
-   * in descending order.
-   *
-   * @return Flow containing a list of Posts.
-   */
-  val posts: Flow<List<Post>> = postApi.getPostsOrderByCreationDateDesc()
-  
-  /**
-   * Adds a new Post to the data source using the injected PostApi.
-   *
-   * @param post The Post object to be added.
-   */
-  fun addPost(post: Post?) {
-    postApi.addPost(post!!)
-  }
-  
+
+    /**
+     * Retrieves a Flow object containing a list of Posts ordered by creation date
+     * in descending order.
+     *
+     * @return Flow containing a list of Posts.
+     */
+    val posts: Flow<List<Post>> = postApi.getPostsOrderByCreationDateDesc()
+
+    /**
+     * Adds a new Post to the data source using the injected PostApi.
+     *
+     * @param post The Post object to be added.
+     */
+    fun addPost(post: Post?) {
+        postApi.addPost(post!!)
+    }
+
 }

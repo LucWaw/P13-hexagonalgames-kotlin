@@ -17,24 +17,24 @@ import javax.inject.Inject
  */
 @HiltViewModel
 class HomefeedViewModel @Inject constructor(private val postRepository: PostRepository) :
-  ViewModel() {
-  
-  private val _posts: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
-  
-  /**
-   * Returns a Flow observable containing the list of posts fetched from the repository.
-   *
-   * @return A Flow<List<Post>> object that can be observed for changes.
-   */
-  val posts: StateFlow<List<Post>>
-    get() = _posts
-  
-  init {
-    viewModelScope.launch {
-      postRepository.posts.collect {
-        _posts.value = it
-      }
+    ViewModel() {
+
+    private val _posts: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
+
+    /**
+     * Returns a Flow observable containing the list of posts fetched from the repository.
+     *
+     * @return A Flow<List<Post>> object that can be observed for changes.
+     */
+    val posts: StateFlow<List<Post>>
+        get() = _posts
+
+    init {
+        viewModelScope.launch {
+            postRepository.posts.collect {
+                _posts.value = it
+            }
+        }
     }
-  }
-  
+
 }
