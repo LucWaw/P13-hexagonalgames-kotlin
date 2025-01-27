@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.hexagonal.games.screen.Screen
-import com.openclassrooms.hexagonal.games.screen.ad.AddScreen
-import com.openclassrooms.hexagonal.games.screen.homefeed.HomefeedScreen
+import com.openclassrooms.hexagonal.games.screen.add.AddScreen
+import com.openclassrooms.hexagonal.games.screen.homefeed.HomeFeedScreen
 import com.openclassrooms.hexagonal.games.screen.settings.SettingsScreen
 import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,10 +40,10 @@ class MainActivity : ComponentActivity() {
 fun HexagonalGamesNavHost(navHostController: NavHostController) {
     NavHost(
         navController = navHostController,
-        startDestination = Screen.Homefeed.route
+        startDestination = Screen.HomeFeed.route
     ) {
-        composable(route = Screen.Homefeed.route) {
-            HomefeedScreen(
+        composable(route = Screen.HomeFeed.route) {
+            HomeFeedScreen(
                 onPostClick = {
                     //TODO
                 },

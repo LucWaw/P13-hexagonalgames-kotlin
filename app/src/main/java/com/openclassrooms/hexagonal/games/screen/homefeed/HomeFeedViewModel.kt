@@ -11,12 +11,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 /**
- * ViewModel responsible for managing data and events related to the Homefeed.
+ * ViewModel responsible for managing data and events related to the HomeFeed.
  * This ViewModel retrieves posts from the PostRepository and exposes them as a Flow<List<Post>>,
  * allowing UI components to observe and react to changes in the posts data.
  */
 @HiltViewModel
-class HomefeedViewModel @Inject constructor(private val postRepository: PostRepository) :
+class HomeFeedViewModel @Inject constructor(private val postRepository: PostRepository) :
     ViewModel() {
 
     private val _posts: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
