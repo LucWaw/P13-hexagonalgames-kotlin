@@ -4,8 +4,12 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.firebase.ui.auth.AuthUI
@@ -16,12 +20,31 @@ import com.openclassrooms.hexagonal.games.R
 
 
 @Composable
-fun AccountScreen(onBackClick: () -> Boolean, modifier: Modifier = Modifier) {
+fun SignInScreen(
+    modifier: Modifier = Modifier,
+    onBackClick: () -> Boolean,
+    onUserConnected: () -> Unit
+) {
+
+    Box(
+        modifier = modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        CircularProgressIndicator()
+    }
+
+
     val context = LocalContext.current
+
 
     val launcher =
         rememberLauncherForActivityResult(FirebaseAuthUIActivityResultContract()) { result ->
-            handleResponseAfterSignIn(result, onBackClick = onBackClick, context)
+            handleResponseAfterSignIn(
+                result,
+                onBackClick = onBackClick,
+                onUserConnected = onUserConnected,
+                context = context
+            )
 
         }
 
@@ -43,23 +66,20 @@ fun AccountScreen(onBackClick: () -> Boolean, modifier: Modifier = Modifier) {
     }
 
 
-    //TODO navigate to home screen when user is created and logged in successfully
-
-
 }
 
 fun handleResponseAfterSignIn(
     result: FirebaseAuthUIAuthenticationResult?,
+    onUserConnected: () -> Unit,
     onBackClick: () -> Boolean,
     context: Context
 ) {
     if (result?.resultCode == RESULT_OK) {
         // Handle sign-in success
+        onUserConnected()
         Toast.makeText(context, context.getString(R.string.SuccessfulConnexion), Toast.LENGTH_LONG)
             .show()
         //TODO UserManager create user in database
-
-
     } else {
         // ERRORS
         if (result == null) {

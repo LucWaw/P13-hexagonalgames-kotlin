@@ -89,4 +89,8 @@ dependencies {
 
     //Authentication
     implementation(libs.firebase.ui.auth)
+
+    //Messaging
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.messaging.directboot)
 }

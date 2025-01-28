@@ -19,4 +19,10 @@
     <string name="network_error">Network error, check your Internet connection</string>
     <string name="unknow_error">An unknown error occurred.</string>
     <string name="SuccessfulConnexion">Successful Connexion</string>
+    <string name="my_account_fragment_label">My account</string>
+    <string name="logout">Sign out</string>
+    <string name="delete_account">Delete account</string>
+    <string name="popup_message_confirmation_delete_account">Are you sure you want to delete your account?</string>
+    <string name="popup_message_choice_yes">Yes</string>
+    <string name="popup_message_choice_no">No</string>
 </resources>

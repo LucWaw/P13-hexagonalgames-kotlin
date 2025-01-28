@@ -9,9 +9,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.openclassrooms.hexagonal.games.screen.Screen
-import com.openclassrooms.hexagonal.games.screen.account.AccountScreen
+import com.openclassrooms.hexagonal.games.screen.account.SignInScreen
 import com.openclassrooms.hexagonal.games.screen.add.AddScreen
 import com.openclassrooms.hexagonal.games.screen.homefeed.HomeFeedScreen
+import com.openclassrooms.hexagonal.games.screen.profile.ProfileScreen
 import com.openclassrooms.hexagonal.games.screen.settings.SettingsScreen
 import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,8 +51,11 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
                 onSettingsClick = {
                     navHostController.navigate(Screen.Settings.route)
                 },
-                onAccountClick = {
-                    navHostController.navigate(Screen.Account.route)
+                onAccountClick = { goToProfile ->
+                    if (goToProfile)
+                        navHostController.navigate(Screen.Profile.route)
+                    else
+                        navHostController.navigate(Screen.SignIn.route)
                 },
                 onFABClick = {
                     navHostController.navigate(Screen.AddPost.route)
@@ -69,8 +73,14 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
                 onBackClick = { navHostController.navigateUp() }
             )
         }
-        composable(route = Screen.Account.route) {
-            AccountScreen(
+        composable(route = Screen.SignIn.route) {
+            SignInScreen(
+                onBackClick = { navHostController.navigateUp() },
+                onUserConnected = { navHostController.navigate(Screen.HomeFeed.route) }
+            )
+        }
+        composable(route = Screen.Profile.route) {
+            ProfileScreen(
                 onBackClick = { navHostController.navigateUp() }
             )
         }

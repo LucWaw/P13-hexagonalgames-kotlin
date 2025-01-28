@@ -19,4 +19,10 @@
     <string name="network_error">Erreur de réseau, vérifiez votre connexion Internet.</string>
     <string name="unknow_error">Une erreur inconnue s\'est produite.</string>
     <string name="SuccessfulConnexion">Connexion Réussie</string>
+    <string name="my_account_fragment_label">Mon compte</string>
+    <string name="logout">Déconnexion</string>
+    <string name="delete_account">Suppression du compte</string>
+    <string name="popup_message_confirmation_delete_account">Es-tu sûr(e) de vouloir supprimer ton compte ?</string>
+    <string name="popup_message_choice_yes">Oui !</string>
+    <string name="popup_message_choice_no">Non</string>
 </resources>

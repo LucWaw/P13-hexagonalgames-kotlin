@@ -54,7 +54,7 @@ fun HomeFeedScreen(
     viewModel: HomeFeedViewModel = hiltViewModel(),
     onPostClick: (Post) -> Unit = {},
     onSettingsClick: () -> Unit = {},
-    onAccountClick: () -> Unit = {},
+    onAccountClick: (Boolean) -> Unit = {},
     onFABClick: () -> Unit = {},
 ) {
     var showMenu by rememberSaveable { mutableStateOf(false) }
@@ -89,7 +89,7 @@ fun HomeFeedScreen(
                         )
                         DropdownMenuItem(
                             onClick = {
-                                onAccountClick()
+                                onAccountClick(viewModel.isCurrentUserLogged())
                             },
                             text = {
                                 Text(

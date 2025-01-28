@@ -21,17 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.tooling.preview.PreviewScreenSizes
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.PermissionState
+import com.google.accompanist.permissions.PermissionStatus
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun SettingsScreen(
     modifier: Modifier = Modifier,
@@ -73,10 +74,11 @@ fun SettingsScreen(
 private fun Settings(
     modifier: Modifier = Modifier,
     onNotificationEnabledClicked: () -> Unit,
-    onNotificationDisabledClicked: () -> Unit
+    onNotificationDisabledClicked: () -> Unit,
+    mockNotificationPermissionState: PermissionState? = null // Pour la prévisualisation
 ) {
     val notificationsPermissionState = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        rememberPermissionState(
+        mockNotificationPermissionState ?: rememberPermissionState(
             android.Manifest.permission.POST_NOTIFICATIONS
         )
     } else {
@@ -115,14 +117,21 @@ private fun Settings(
     }
 }
 
-@PreviewLightDark
-@PreviewScreenSizes
+@OptIn(ExperimentalPermissionsApi::class)
+@Preview
 @Composable
 private fun SettingsPreview() {
+    val mockPermissionState = object : PermissionState {
+        override val permission = android.Manifest.permission.POST_NOTIFICATIONS
+        override val status = PermissionStatus.Granted
+        override fun launchPermissionRequest() {}
+    }
+
     HexagonalGamesTheme {
         Settings(
             onNotificationEnabledClicked = { },
-            onNotificationDisabledClicked = { }
+            onNotificationDisabledClicked = { },
+            mockNotificationPermissionState = mockPermissionState
         )
     }
 }

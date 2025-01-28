@@ -1,5 +1,7 @@
 package com.openclassrooms.hexagonal.games.di
 
+import com.openclassrooms.hexagonal.games.data.manager.UserManager
+import com.openclassrooms.hexagonal.games.data.repository.UserRepository
 import com.openclassrooms.hexagonal.games.data.service.PostApi
 import com.openclassrooms.hexagonal.games.data.service.PostFakeApi
 import dagger.Module
@@ -27,5 +29,19 @@ class AppModule {
     @Singleton
     fun providePostApi(): PostApi {
         return PostFakeApi()
+    }
+
+    //Provide Manager
+    @Provides
+    @Singleton
+    fun provideUserManager(userRepository: UserRepository): UserManager {
+        return UserManager(userRepository)
+    }
+
+    //Provide Repository
+    @Provides
+    @Singleton
+    fun provideUserRepository(): UserRepository {
+        return UserRepository()
     }
 }
