@@ -25,4 +25,8 @@
     <string name="popup_message_confirmation_delete_account">Es-tu sûr(e) de vouloir supprimer ton compte ?</string>
     <string name="popup_message_choice_yes">Oui !</string>
     <string name="popup_message_choice_no">Non</string>
+    <string name="unsubscribe_failed">Échec de la désinscription</string>
+    <string name="unsubscribe_successful">Désinscription effectuée</string>
+    <string name="subscribe_failed">L\'abonnement a échoué</string>
+    <string name="subscribe_successful">Abonné</string>
 </resources>

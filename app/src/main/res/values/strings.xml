@@ -25,4 +25,8 @@
     <string name="popup_message_confirmation_delete_account">Are you sure you want to delete your account?</string>
     <string name="popup_message_choice_yes">Yes</string>
     <string name="popup_message_choice_no">No</string>
+    <string name="unsubscribe_failed">Unsubscribe failed</string>
+    <string name="unsubscribe_successful">Unsubscribed</string>
+    <string name="subscribe_failed">Subscribe failed</string>
+    <string name="subscribe_successful">Subscribed</string>
 </resources>
