@@ -93,4 +93,10 @@ dependencies {
     //Messaging
     implementation(libs.firebase.messaging)
     implementation(libs.firebase.messaging.directboot)
+
+    //Storage
+    implementation(libs.firebase.ui.storage)
+
+    //Firestore
+    implementation(libs.firebase.ui.firestore)
 }

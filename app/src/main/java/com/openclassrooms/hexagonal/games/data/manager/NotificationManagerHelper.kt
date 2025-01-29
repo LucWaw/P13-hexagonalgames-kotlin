@@ -6,12 +6,14 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.openclassrooms.hexagonal.games.ui.MainActivity
 
 class NotificationManagerHelper(private val context: Context) {
 
-    private val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     private val sharedPreferences = context.getSharedPreferences("app_prefs", Context.MODE_PRIVATE)
 
     fun sendNotification(title: String?, body: String?) {
@@ -21,7 +23,8 @@ class NotificationManagerHelper(private val context: Context) {
         val channelName = "Firebase Messaging"
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+            val channel =
+                NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
             notificationManager.createNotificationChannel(channel)
         }
 
@@ -39,6 +42,8 @@ class NotificationManagerHelper(private val context: Context) {
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()
+
+        Log.d("NotificationManagerHelper", "Sending notification: $title - $body")
 
         notificationManager.notify(1, notification)
     }
@@ -59,7 +64,7 @@ class NotificationManagerHelper(private val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             notificationManager.deleteNotificationChannel("Firebase Messaging ID")
         }
-        saveNotificationState(false) // Enregistrer l'état comme désactivé
+        saveNotificationState(false)
     }
 
     private fun areNotificationsEnabled(): Boolean {

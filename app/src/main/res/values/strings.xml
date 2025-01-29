@@ -29,4 +29,6 @@
     <string name="unsubscribe_successful">Unsubscribed</string>
     <string name="subscribe_failed">Subscribe failed</string>
     <string name="subscribe_successful">Subscribed</string>
+    <string name="action_add_image">Select a photo</string>
+    <string name="image_selected">Image Selected</string>
 </resources>

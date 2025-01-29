@@ -24,6 +24,14 @@ class UserManager(private val userRepository: UserRepository) {
     }
 
     fun deleteUser(context: Context): Task<Void> {
-        return userRepository.deleteUser(context)
+        // Delete the user account from the Auth
+        return userRepository.deleteUser(context).addOnCompleteListener {
+            // Once done, delete the user datas from Firestore
+            userRepository.deleteUserFromFirestore()
+        }
+    }
+
+    fun createUser() {
+        userRepository.createUser()
     }
 }

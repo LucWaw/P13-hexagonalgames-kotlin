@@ -1,9 +1,16 @@
 package com.openclassrooms.hexagonal.games.screen.add
 
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -20,8 +27,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -29,6 +40,7 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
 import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 
@@ -63,6 +75,24 @@ fun AddScreen(
         val post by viewModel.post.collectAsStateWithLifecycle()
         val error by viewModel.error.collectAsStateWithLifecycle()
 
+        var imageUri by remember {
+            mutableStateOf<Uri?>(null)
+        }
+
+        val pickMedia =
+            rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+                // Callback is invoked after the user selects a media item or closes the
+                // photo picker.
+                if (uri != null) {
+                    Log.d("PhotoPicker", "Selected URI: $uri")
+                    imageUri = uri
+                } else {
+                    Log.d("PhotoPicker", "No media selected")
+                }
+            }
+
+
+
         CreatePost(
             modifier = Modifier.padding(contentPadding),
             error = error,
@@ -73,7 +103,11 @@ fun AddScreen(
             onSaveClicked = {
                 viewModel.addPost()
                 onSaveClick()
-            }
+            },
+            openPhotoPicker = {
+                pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+            },
+            uriImage = imageUri
         )
     }
 }
@@ -86,7 +120,9 @@ private fun CreatePost(
     description: String,
     onDescriptionChanged: (String) -> Unit,
     onSaveClicked: () -> Unit,
-    error: FormError?
+    openPhotoPicker: () -> Unit,
+    error: FormError?,
+    uriImage: Uri?
 ) {
     val scrollState = rememberScrollState()
 
@@ -128,7 +164,34 @@ private fun CreatePost(
                 label = { Text(stringResource(id = R.string.hint_description)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
+            Button(
+                modifier =
+                Modifier
+                    .padding(8.dp)
+                    .align(Alignment.CenterHorizontally),
+                onClick = {
+                    openPhotoPicker()
+                }
+            ) {
+                Text(
+                    text = stringResource(id = R.string.action_add_image)
+                )
+            }
+            AsyncImage(
+                model = uriImage,
+                contentDescription = stringResource(R.string.image_selected),
+                modifier = Modifier
+                    .padding(4.dp)
+                    .width(500.dp)
+                    .heightIn(max = 300.dp)
+                    .align(Alignment.CenterHorizontally),
+                contentScale = ContentScale.Crop,
+            )
+
+
         }
+
+
         Button(
             enabled = error == null,
             onClick = { onSaveClicked() }
@@ -141,6 +204,7 @@ private fun CreatePost(
     }
 }
 
+
 @PreviewLightDark
 @PreviewScreenSizes
 @Composable
@@ -152,7 +216,9 @@ private fun CreatePostPreview() {
             description = "description",
             onDescriptionChanged = { },
             onSaveClicked = { },
-            error = null
+            openPhotoPicker = { },
+            error = null,
+            uriImage = Uri.EMPTY
         )
     }
 }
@@ -168,7 +234,9 @@ private fun CreatePostErrorPreview() {
             description = "description",
             onDescriptionChanged = { },
             onSaveClicked = { },
-            error = FormError.TitleError
+            openPhotoPicker = { },
+            error = FormError.TitleError,
+            uriImage = Uri.EMPTY
         )
     }
 }

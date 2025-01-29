@@ -29,4 +29,6 @@
     <string name="unsubscribe_successful">Désinscription effectuée</string>
     <string name="subscribe_failed">L\'abonnement a échoué</string>
     <string name="subscribe_successful">Abonné</string>
+    <string name="action_add_image">Sélectionner une photo</string>
+    <string name="image_selected">Image sélectionné</string>
 </resources>

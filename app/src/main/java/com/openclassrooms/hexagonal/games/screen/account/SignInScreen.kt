@@ -12,6 +12,7 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.ErrorCodes
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract
@@ -23,8 +24,11 @@ import com.openclassrooms.hexagonal.games.R
 fun SignInScreen(
     modifier: Modifier = Modifier,
     onBackClick: () -> Boolean,
+    signInViewModel: SignInViewModel = hiltViewModel(),
     onUserConnected: () -> Unit
 ) {
+
+    val onSignInSuccess = signInViewModel::createUser
 
     Box(
         modifier = modifier.fillMaxSize(),
@@ -43,6 +47,7 @@ fun SignInScreen(
                 result,
                 onBackClick = onBackClick,
                 onUserConnected = onUserConnected,
+                onSignInSuccess = onSignInSuccess,
                 context = context
             )
 
@@ -72,14 +77,15 @@ fun handleResponseAfterSignIn(
     result: FirebaseAuthUIAuthenticationResult?,
     onUserConnected: () -> Unit,
     onBackClick: () -> Boolean,
-    context: Context
+    context: Context,
+    onSignInSuccess: () -> Unit
 ) {
     if (result?.resultCode == RESULT_OK) {
         // Handle sign-in success
+        onSignInSuccess()
         onUserConnected()
         Toast.makeText(context, context.getString(R.string.SuccessfulConnexion), Toast.LENGTH_LONG)
             .show()
-        //TODO UserManager create user in database
     } else {
         // ERRORS
         if (result == null) {
