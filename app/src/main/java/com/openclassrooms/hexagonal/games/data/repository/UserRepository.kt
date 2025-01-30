@@ -3,6 +3,7 @@ package com.openclassrooms.hexagonal.games.data.repository
 import android.content.Context
 import com.firebase.ui.auth.AuthUI
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.CollectionReference
@@ -54,11 +55,12 @@ class UserRepository {
     }
 
     // Delete the User from Firestore
-    fun deleteUserFromFirestore() {
+    fun deleteUserFromFirestore() : Task<Void> {
         val uid: String? = getCurrentUserUID()
         if (uid != null) {
-            getUsersCollection().document(uid).delete()
+            return getUsersCollection().document(uid).delete()
         }
+        return Tasks.forResult(null)
     }
 
     // Get User Data from Firestore

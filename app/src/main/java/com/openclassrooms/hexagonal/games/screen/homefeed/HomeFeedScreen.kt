@@ -55,7 +55,7 @@ fun HomeFeedScreen(
     onPostClick: (Post) -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onAccountClick: (Boolean) -> Unit = {},
-    onFABClick: () -> Unit = {},
+    onFABClick: (Boolean) -> Unit = {},
 ) {
     var showMenu by rememberSaveable { mutableStateOf(false) }
 
@@ -105,7 +105,7 @@ fun HomeFeedScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    onFABClick()
+                    onFABClick(viewModel.isCurrentUserLogged())
                 }
             ) {
                 Icon(

@@ -31,4 +31,7 @@
     <string name="subscribe_successful">Abonné</string>
     <string name="action_add_image">Sélectionner une photo</string>
     <string name="image_selected">Image sélectionné</string>
+    <string name="error_description">Description non valide</string>
+    <string name="error_image">Photo non valide</string>
+    <string name="post_account_mandatory">Un compte est nécessaire pour ajouter une publication</string>
 </resources>

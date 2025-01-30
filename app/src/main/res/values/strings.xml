@@ -31,4 +31,7 @@
     <string name="subscribe_successful">Subscribed</string>
     <string name="action_add_image">Select a photo</string>
     <string name="image_selected">Image Selected</string>
+    <string name="error_description">Invalid description</string>
+    <string name="error_image">Invalid photo</string>
+    <string name="post_account_mandatory">An account is mandatory in order to add a post</string>
 </resources>

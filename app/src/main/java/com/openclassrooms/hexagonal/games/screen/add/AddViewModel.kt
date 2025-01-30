@@ -1,7 +1,10 @@
 package com.openclassrooms.hexagonal.games.screen.add
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.tasks.Task
+import com.openclassrooms.hexagonal.games.data.manager.UserManager
 import com.openclassrooms.hexagonal.games.data.repository.PostRepository
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import com.openclassrooms.hexagonal.games.domain.model.User
@@ -19,7 +22,10 @@ import javax.inject.Inject
  * It utilizes dependency injection to retrieve a PostRepository instance for interacting with post data.
  */
 @HiltViewModel
-class AddViewModel @Inject constructor(private val postRepository: PostRepository) : ViewModel() {
+class AddViewModel @Inject constructor(
+    private val postRepository: PostRepository,
+    private val userManager: UserManager
+) : ViewModel() {
 
     /**
      * Internal mutable state flow representing the current post being edited.
@@ -71,21 +77,43 @@ class AddViewModel @Inject constructor(private val postRepository: PostRepositor
                     title = formEvent.title
                 )
             }
+
+            is FormEvent.ImageChanged -> {
+                _post.value = _post.value.copy(
+                    photoUrl = formEvent.uri
+                )
+            }
         }
     }
 
     /**
      * Attempts to add the current post to the repository after setting the author.
      *
-     * TODO: Implement logic to retrieve the current user.
      */
-    fun addPost() {
-        //TODO : retrieve the current user
-        postRepository.addPost(
-            _post.value.copy(
-                author = User("1", "Gerry", "Ariella")
+    fun addPost(): Task<User>? {
+        val userdata = userManager.getUserData()
+
+        if (userdata == null) {
+            Log.d("AddViewModel", "User data is null")
+            return null
+        }
+
+
+        return userdata.addOnSuccessListener { user ->
+            _post.value = _post.value.copy(
+                author = User(
+                    id = user.id,
+                    firstname = user.firstname,
+                    lastname = user.lastname
+                )
             )
-        )
+
+            postRepository.addPost(
+                _post.value
+            )
+        }.addOnFailureListener() {
+            Log.d("AddViewModel", "Error: $it")
+        }
     }
 
     /**
@@ -93,13 +121,17 @@ class AddViewModel @Inject constructor(private val postRepository: PostRepositor
      * and returns a corresponding FormError if so.
      *
      * @return A FormError.TitleError if title is empty, null otherwise.
+     * @return A FormError.ImageDescriptionError if image and description are empty, null otherwise.
      */
     private fun verifyPost(): FormError? {
-        return if (_post.value.title.isEmpty()) {
-            FormError.TitleError
-        } else {
-            null
+        return when {
+            _post.value.title.isEmpty() -> FormError.TitleError
+            _post.value.description.isNullOrEmpty() && _post.value.photoUrl.isNullOrEmpty()
+                -> FormError.ImageDescriptionError
+
+            else -> null
         }
     }
+
 
 }

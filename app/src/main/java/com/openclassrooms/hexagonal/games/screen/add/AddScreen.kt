@@ -27,9 +27,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -75,9 +72,6 @@ fun AddScreen(
         val post by viewModel.post.collectAsStateWithLifecycle()
         val error by viewModel.error.collectAsStateWithLifecycle()
 
-        var imageUri by remember {
-            mutableStateOf<Uri?>(null)
-        }
 
         val pickMedia =
             rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -85,7 +79,7 @@ fun AddScreen(
                 // photo picker.
                 if (uri != null) {
                     Log.d("PhotoPicker", "Selected URI: $uri")
-                    imageUri = uri
+                    viewModel.onAction(FormEvent.ImageChanged(uri.toString()))
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -101,13 +95,12 @@ fun AddScreen(
             description = post.description ?: "",
             onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
             onSaveClicked = {
-                viewModel.addPost()
-                onSaveClick()
+                viewModel.addPost()?.addOnSuccessListener { onSaveClick() }
             },
             openPhotoPicker = {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             },
-            uriImage = imageUri
+            uriImage = post.photoUrl?.let { Uri.parse(it) }
         )
     }
 }
@@ -159,11 +152,18 @@ private fun CreatePost(
                 modifier = Modifier
                     .padding(top = 16.dp)
                     .fillMaxWidth(),
+                isError = error is FormError.ImageDescriptionError,
                 value = description,
                 onValueChange = { onDescriptionChanged(it) },
                 label = { Text(stringResource(id = R.string.hint_description)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
+            if (error is FormError.ImageDescriptionError) {
+                Text(
+                    text = stringResource(id = error.messageRes),
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
             Button(
                 modifier =
                 Modifier

@@ -1,6 +1,7 @@
 package com.openclassrooms.hexagonal.games.ui
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
@@ -8,6 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.openclassrooms.hexagonal.games.R
 import com.openclassrooms.hexagonal.games.screen.Screen
 import com.openclassrooms.hexagonal.games.screen.account.SignInScreen
 import com.openclassrooms.hexagonal.games.screen.add.AddScreen
@@ -57,8 +59,16 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
                     else
                         navHostController.navigate(Screen.SignIn.route)
                 },
-                onFABClick = {
-                    navHostController.navigate(Screen.AddPost.route)
+                onFABClick = { isUserLogged ->
+                    if (isUserLogged) {
+                        navHostController.navigate(Screen.AddPost.route)
+                    } else {
+                        Toast.makeText(
+                            navHostController.context,
+                            navHostController.context.getString(R.string.post_account_mandatory),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
             )
         }

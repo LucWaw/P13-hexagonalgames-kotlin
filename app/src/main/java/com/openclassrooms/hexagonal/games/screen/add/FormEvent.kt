@@ -22,6 +22,13 @@ sealed class FormEvent {
      */
     data class DescriptionChanged(val description: String) : FormEvent()
 
+    /**
+     * Event triggered when the image of the form is changed.
+     *
+     * @property uri The new image of the form.
+     */
+    data class ImageChanged(val uri: String) : FormEvent()
+
 }
 
 /**
@@ -37,5 +44,13 @@ sealed class FormError(@StringRes val messageRes: Int) {
      * The actual error message can be retrieved using the provided resource ID (`R.string.error_title`).
      */
     data object TitleError : FormError(R.string.error_title)
+
+    /**
+     * Error indicating an issue with the form Image and Description.
+     *
+     * The actual error message can be retrieved using the provided resource ID (`R.string.error_description`).
+     */
+    data object ImageDescriptionError : FormError(R.string.error_description)
+
 
 }
