@@ -71,7 +71,7 @@ fun AddScreen(
     ) { contentPadding ->
         val post by viewModel.post.collectAsStateWithLifecycle()
         val error by viewModel.error.collectAsStateWithLifecycle()
-
+        val uriImage by viewModel.uriImage.collectAsStateWithLifecycle()
 
         val pickMedia =
             rememberLauncherForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
@@ -79,7 +79,7 @@ fun AddScreen(
                 // photo picker.
                 if (uri != null) {
                     Log.d("PhotoPicker", "Selected URI: $uri")
-                    viewModel.onAction(FormEvent.ImageChanged(uri.toString()))
+                    viewModel.onAction(FormEvent.ImageChanged(uri))
                 } else {
                     Log.d("PhotoPicker", "No media selected")
                 }
@@ -95,12 +95,12 @@ fun AddScreen(
             description = post.description ?: "",
             onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
             onSaveClicked = {
-                viewModel.addPost()?.addOnSuccessListener { onSaveClick() }
+                viewModel.addPost(uriImage)?.addOnSuccessListener { onSaveClick() }
             },
             openPhotoPicker = {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
             },
-            uriImage = post.photoUrl?.let { Uri.parse(it) }
+            uriImage = uriImage
         )
     }
 }

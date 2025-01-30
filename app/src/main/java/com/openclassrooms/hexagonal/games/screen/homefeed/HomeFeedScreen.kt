@@ -1,5 +1,6 @@
 package com.openclassrooms.hexagonal.games.screen.homefeed
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -116,12 +117,21 @@ fun HomeFeedScreen(
         }
     ) { contentPadding ->
         val posts by viewModel.posts.collectAsStateWithLifecycle()
+        if (!viewModel.isNetworkAvailable(LocalContext.current)) {
+            Toast.makeText(
+                LocalContext.current,
+                stringResource(id = R.string.no_internet),
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+
 
         HomeFeedList(
             modifier = modifier.padding(contentPadding),
             posts = posts,
             onPostClick = onPostClick
         )
+
     }
 }
 
@@ -135,12 +145,21 @@ private fun HomeFeedList(
         modifier = modifier.padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(posts) { post ->
-            HomeFeedCell(
-                post = post,
-                onPostClick = onPostClick
-            )
+        if (posts.isEmpty()) {
+            item {
+                Text(
+                    text = stringResource(id = R.string.no_posts),
+                )
+            }
+        } else {
+            items(posts) { post ->
+                HomeFeedCell(
+                    post = post,
+                    onPostClick = onPostClick
+                )
+            }
         }
+
     }
 }
 

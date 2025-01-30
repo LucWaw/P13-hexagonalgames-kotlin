@@ -1,5 +1,6 @@
 package com.openclassrooms.hexagonal.games.screen.homefeed
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.openclassrooms.hexagonal.games.data.manager.UserManager
@@ -17,7 +18,10 @@ import javax.inject.Inject
  * allowing UI components to observe and react to changes in the posts data.
  */
 @HiltViewModel
-class HomeFeedViewModel @Inject constructor(private val postRepository: PostRepository, private val userManager: UserManager) :
+class HomeFeedViewModel @Inject constructor(
+    private val postRepository: PostRepository,
+    private val userManager: UserManager
+) :
     ViewModel() {
 
     private val _posts: MutableStateFlow<List<Post>> = MutableStateFlow(emptyList())
@@ -41,6 +45,10 @@ class HomeFeedViewModel @Inject constructor(private val postRepository: PostRepo
 
     fun isCurrentUserLogged(): Boolean {
         return userManager.isCurrentUserLogged()
+    }
+
+    fun isNetworkAvailable(context: Context): Boolean {
+        return postRepository.isNetworkAvailable(context)
     }
 
 }

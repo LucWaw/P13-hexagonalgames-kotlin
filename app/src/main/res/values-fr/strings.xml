@@ -34,4 +34,6 @@
     <string name="error_description">Description non valide</string>
     <string name="error_image">Photo non valide</string>
     <string name="post_account_mandatory">Un compte est nécessaire pour ajouter une publication</string>
+    <string name="no_posts">Aucune publication</string>
+    <string name="no_internet">Pas de réseau</string>
 </resources>

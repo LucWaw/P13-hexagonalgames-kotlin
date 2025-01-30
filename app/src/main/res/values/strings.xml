@@ -34,4 +34,6 @@
     <string name="error_description">Invalid description</string>
     <string name="error_image">Invalid photo</string>
     <string name="post_account_mandatory">An account is mandatory in order to add a post</string>
+    <string name="no_posts">No posts</string>
+    <string name="no_internet">No network</string>
 </resources>

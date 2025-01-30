@@ -1,5 +1,6 @@
 package com.openclassrooms.hexagonal.games.screen.add
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import java.util.UUID
@@ -26,6 +29,9 @@ class AddViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val userManager: UserManager
 ) : ViewModel() {
+
+    private val _uriImage: MutableStateFlow<Uri?> = MutableStateFlow(null)
+    val uriImage = _uriImage.asStateFlow()
 
     /**
      * Internal mutable state flow representing the current post being edited.
@@ -51,7 +57,9 @@ class AddViewModel @Inject constructor(
     /**
      * StateFlow derived from the post that emits a FormError if the title is empty, null otherwise.
      */
-    val error = post.map {
+    val error = post.combine(uriImage){
+        post, uriImage -> Pair(post, uriImage)
+    }.map {
         verifyPost()
     }.stateIn(
         scope = viewModelScope,
@@ -79,9 +87,7 @@ class AddViewModel @Inject constructor(
             }
 
             is FormEvent.ImageChanged -> {
-                _post.value = _post.value.copy(
-                    photoUrl = formEvent.uri
-                )
+                _uriImage.value = formEvent.image
             }
         }
     }
@@ -90,7 +96,7 @@ class AddViewModel @Inject constructor(
      * Attempts to add the current post to the repository after setting the author.
      *
      */
-    fun addPost(): Task<User>? {
+    fun addPost(uri: Uri?): Task<User>? {
         val userdata = userManager.getUserData()
 
         if (userdata == null) {
@@ -109,7 +115,8 @@ class AddViewModel @Inject constructor(
             )
 
             postRepository.addPost(
-                _post.value
+                _post.value,
+                uri
             )
         }.addOnFailureListener() {
             Log.d("AddViewModel", "Error: $it")
@@ -126,7 +133,7 @@ class AddViewModel @Inject constructor(
     private fun verifyPost(): FormError? {
         return when {
             _post.value.title.isEmpty() -> FormError.TitleError
-            _post.value.description.isNullOrEmpty() && _post.value.photoUrl.isNullOrEmpty()
+            _post.value.description.isNullOrEmpty() && uriImage.value == null
                 -> FormError.ImageDescriptionError
 
             else -> null

@@ -96,6 +96,9 @@ dependencies {
 
     //Storage
     implementation(libs.firebase.ui.storage)
+    //Glide
+    implementation(libs.glide)
+    ksp(libs.glide.compiler)
 
     //Firestore
     implementation(libs.firebase.ui.firestore)
