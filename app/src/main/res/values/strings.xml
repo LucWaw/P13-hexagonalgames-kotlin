@@ -36,4 +36,5 @@
     <string name="post_account_mandatory">An account is mandatory in order to add a post</string>
     <string name="no_posts">No posts</string>
     <string name="no_internet">No network</string>
+    <string name="comment_account_mandatory">An account is mandatory in order to add a comment</string>
 </resources>

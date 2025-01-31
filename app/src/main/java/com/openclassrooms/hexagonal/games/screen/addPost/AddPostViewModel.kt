@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen.add
+package com.openclassrooms.hexagonal.games.screen.addPost
 
 import android.net.Uri
 import android.util.Log
@@ -25,7 +25,7 @@ import javax.inject.Inject
  * It utilizes dependency injection to retrieve a PostRepository instance for interacting with post data.
  */
 @HiltViewModel
-class AddViewModel @Inject constructor(
+class AddPostViewModel @Inject constructor(
     private val postRepository: PostRepository,
     private val userManager: UserManager
 ) : ViewModel() {
@@ -100,7 +100,7 @@ class AddViewModel @Inject constructor(
         val userdata = userManager.getUserData()
 
         if (userdata == null) {
-            Log.d("AddViewModel", "User data is null")
+            Log.d("AddPostViewModel", "User data is null")
             return null
         }
 
@@ -119,7 +119,7 @@ class AddViewModel @Inject constructor(
                 uri
             )
         }.addOnFailureListener() {
-            Log.d("AddViewModel", "Error: $it")
+            Log.d("AddPostViewModel", "Error: $it")
         }
     }
 

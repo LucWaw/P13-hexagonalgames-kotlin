@@ -53,7 +53,7 @@ import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 fun HomeFeedScreen(
     modifier: Modifier = Modifier,
     viewModel: HomeFeedViewModel = hiltViewModel(),
-    onPostClick: (Post) -> Unit = {},
+    onPostClick: (String) -> Unit = {},
     onSettingsClick: () -> Unit = {},
     onAccountClick: (Boolean) -> Unit = {},
     onFABClick: (Boolean) -> Unit = {},
@@ -139,7 +139,7 @@ fun HomeFeedScreen(
 private fun HomeFeedList(
     modifier: Modifier = Modifier,
     posts: List<Post>,
-    onPostClick: (Post) -> Unit,
+    onPostClick: (String) -> Unit,
 ) {
     LazyColumn(
         modifier = modifier.padding(8.dp),
@@ -166,12 +166,12 @@ private fun HomeFeedList(
 @Composable
 private fun HomeFeedCell(
     post: Post,
-    onPostClick: (Post) -> Unit,
+    onPostClick: (String) -> Unit,
 ) {
     ElevatedCard(
         modifier = Modifier.fillMaxWidth(),
         onClick = {
-            onPostClick(post)
+            onPostClick(post.id)
         }) {
         Column(
             modifier = Modifier.padding(8.dp),

@@ -1,4 +1,4 @@
-package com.openclassrooms.hexagonal.games.screen.add
+package com.openclassrooms.hexagonal.games.screen.addPost
 
 import android.net.Uri
 import android.util.Log
@@ -45,7 +45,7 @@ import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 @Composable
 fun AddScreen(
     modifier: Modifier = Modifier,
-    viewModel: AddViewModel = hiltViewModel(),
+    viewModel: AddPostViewModel = hiltViewModel(),
     onBackClick: () -> Unit,
     onSaveClick: () -> Unit
 ) {
