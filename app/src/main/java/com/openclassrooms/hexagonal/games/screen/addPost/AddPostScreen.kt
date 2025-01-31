@@ -46,8 +46,7 @@ import com.openclassrooms.hexagonal.games.ui.theme.HexagonalGamesTheme
 fun AddScreen(
     modifier: Modifier = Modifier,
     viewModel: AddPostViewModel = hiltViewModel(),
-    onBackClick: () -> Unit,
-    onSaveClick: () -> Unit
+    onBackClick: () -> Unit
 ) {
     Scaffold(
         modifier = modifier,
@@ -95,7 +94,7 @@ fun AddScreen(
             description = post.description ?: "",
             onDescriptionChanged = { viewModel.onAction(FormEvent.DescriptionChanged(it)) },
             onSaveClicked = {
-                viewModel.addPost(uriImage)?.addOnSuccessListener { onSaveClick() }
+                viewModel.addPost(uriImage)?.addOnSuccessListener { onBackClick() }
             },
             openPhotoPicker = {
                 pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))

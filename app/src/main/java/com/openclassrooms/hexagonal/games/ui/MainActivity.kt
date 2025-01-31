@@ -67,8 +67,7 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
             })
         }
         composable(route = Screen.AddPost.route) {
-            AddScreen(onBackClick = { navHostController.navigateUp() },
-                onSaveClick = { navHostController.navigateUp() })
+            AddScreen(onBackClick = { navHostController.navigateUp() })
         }
         composable(route = Screen.Settings.route) {
             SettingsScreen(onBackClick = { navHostController.navigateUp() })
@@ -87,7 +86,7 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
             val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
             DetailScreen(
                 onFABClick = { isUserLogged ->
-                    if (isUserLogged) navHostController.navigate(Screen.AddComment.route)
+                    if (isUserLogged) navHostController.navigate("${Screen.AddComment.route}/${postId}")
                     else Toast.makeText(
                         navHostController.context,
                         navHostController.context.getString(R.string.comment_account_mandatory),
@@ -99,8 +98,15 @@ fun HexagonalGamesNavHost(navHostController: NavHostController) {
             )
         }
 
-        composable(route = Screen.AddComment.route) {
-            AddCommentScreen()
+        composable(
+            route = "${Screen.AddComment.route}/{postId}",
+            arguments = Screen.AddComment.navArguments
+        ) { backStackEntry ->
+            val postId = backStackEntry.arguments?.getString("postId") ?: return@composable
+            AddCommentScreen(
+                postId = postId,
+                onBackClick = { navHostController.navigateUp() },
+            )
         }
     }
 }

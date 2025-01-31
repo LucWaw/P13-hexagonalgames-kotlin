@@ -20,5 +20,5 @@ sealed class Screen(
 
     data object Detail : Screen("detail", navArguments = listOf(navArgument("postId") { type = NavType.StringType }))
 
-    data object AddComment : Screen("addComment")
+    data object AddComment : Screen("addComment", navArguments = listOf(navArgument("postId") { type = NavType.StringType }))
 }

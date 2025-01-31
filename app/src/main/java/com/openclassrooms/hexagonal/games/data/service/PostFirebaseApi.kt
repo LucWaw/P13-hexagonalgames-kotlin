@@ -70,7 +70,7 @@ class PostFirebaseApi : PostApi {
     override fun getPost(postId: String): Task<DocumentSnapshot> {
         return getPostCollection().document(postId).get()
     }
-    
+
 
     override fun getCommentsByCreationDateAsc(postId: String): Flow<List<Comment>> {
         return getPostCollection()
@@ -81,6 +81,14 @@ class PostFirebaseApi : PostApi {
             .map { querySnapshot ->
                 querySnapshot.toObjects(Comment::class.java)
             }
+    }
+
+    override fun addComment(postId: String,comment: Comment) {
+        getPostCollection()
+            .document(postId)
+            .collection("comments")
+            .document(comment.id)
+            .set(comment)
     }
 
 

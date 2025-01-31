@@ -59,4 +59,12 @@ interface PostApi {
      * @return A list of Comments associated with the specified Post in ascending order(oldest first).
      */
     fun getCommentsByCreationDateAsc(postId: String): Flow<List<Comment>>
+
+    /**
+     * Adds a new Comment to the data source.
+     *
+     * @param postId The ID of the Post to add the comment to.
+     * @param comment The Comment object to be added.
+     */
+    fun addComment(postId: String, comment: Comment)
 }

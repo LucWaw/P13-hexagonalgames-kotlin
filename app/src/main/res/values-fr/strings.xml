@@ -40,4 +40,5 @@
     <string name="comments">Commentaires</string>
     <string name="arrow_forward">Flèche vers l\'avant</string>
     <string name="no_comments">Pas encore de commentaires, clique sur le bouton ajouter !</string>
+    <string name="error_content_comment">Commentaire non valide</string>
 </resources>

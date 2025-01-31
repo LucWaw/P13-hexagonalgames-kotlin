@@ -82,4 +82,14 @@ class PostRepository @Inject constructor(private val postApi: PostApi) {
             task.result.toObject(Post::class.java)
         })
     }
+
+    /**
+     * Adds a new Comment to the data source using the injected PostApi.
+     *
+     * @param idPost The ID of the Post to add the comment to.
+     * @param value The Comment object to be added.
+     */
+    fun addComment(value: Comment, idPost: String) {
+        return postApi.addComment(idPost, value)
+    }
 }

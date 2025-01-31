@@ -38,7 +38,6 @@ sealed class FormEvent {
  * Each error holds a resource ID for the corresponding error message string.
  */
 sealed class FormError(@StringRes val messageRes: Int) {
-
     /**
      * Error indicating an issue with the form title.
      *
