@@ -37,4 +37,7 @@
     <string name="no_posts">Aucune publication</string>
     <string name="no_internet">Pas de réseau</string>
     <string name="comment_account_mandatory">Un compte est nécessaire pour ajouter un commentaire</string>
+    <string name="comments">Commentaires</string>
+    <string name="arrow_forward">Flèche vers l\'avant</string>
+    <string name="no_comments">Pas encore de commentaires, clique sur le bouton ajouter !</string>
 </resources>

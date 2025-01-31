@@ -2,7 +2,10 @@ package com.openclassrooms.hexagonal.games.data.repository
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
+import com.google.android.gms.tasks.Task
 import com.openclassrooms.hexagonal.games.data.service.PostApi
+import com.openclassrooms.hexagonal.games.domain.model.Comment
 import com.openclassrooms.hexagonal.games.domain.model.Post
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
@@ -25,6 +28,15 @@ class PostRepository @Inject constructor(private val postApi: PostApi) {
      * @return Flow containing a list of Posts.
      */
     val posts: Flow<List<Post>> = postApi.getPostsOrderByCreationDateDesc()
+
+    /**
+     * Retrieves a Flow object containing a list of Comments associated with a Post
+     * ordered by creation date in ascending order.
+     *
+     * @param idPost The ID of the Post to retrieve comments for.
+     * @return Flow containing a list of Comments.
+     */
+    fun comments(idPost: String): Flow<List<Comment>> = postApi.getCommentsByCreationDateAsc(idPost)
 
     /**
      * Adds a new Post to the data source using the injected PostApi.
@@ -61,5 +73,13 @@ class PostRepository @Inject constructor(private val postApi: PostApi) {
      */
     fun isNetworkAvailable(context: Context): Boolean {
         return postApi.isNetworkAvailable(context)
+    }
+
+    fun getPost(postId: String): Task<Post>? {
+        return postApi.getPost(postId)?.continueWith({ task ->
+            Log.d("PostRepository", "getPost: ${task.result.toObject(Post::class.java)}")
+
+            task.result.toObject(Post::class.java)
+        })
     }
 }
