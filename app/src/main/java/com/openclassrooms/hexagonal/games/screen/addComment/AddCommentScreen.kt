@@ -42,7 +42,7 @@ fun AddCommentScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(id = R.string.add_fragment_label))
+                    Text(stringResource(id = R.string.add_comment_label))
                 },
                 navigationIcon = {
                     IconButton(onClick = {
@@ -101,7 +101,7 @@ fun CreateComment(
                 isError = error is FormErrorComment.ContentCommentError,
                 value = content,
                 onValueChange = { onContentChanged(it) },
-                label = { Text(stringResource(id = R.string.hint_description)) },
+                label = { Text(stringResource(id = R.string.comment)) },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text)
             )
             if (error is FormErrorComment.ContentCommentError) {

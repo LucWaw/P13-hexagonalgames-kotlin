@@ -41,4 +41,6 @@
     <string name="arrow_forward">Arrow Forward</string>
     <string name="no_comments">No comments yet, click on the add button!</string>
     <string name="error_content_comment">Comment not valid</string>
+    <string name="add_comment_label">Add a comment</string>
+    <string name="comment">Comment</string>
 </resources>
