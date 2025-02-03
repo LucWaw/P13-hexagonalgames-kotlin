@@ -32,21 +32,27 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.11"
     }
 
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
     }
-}
 
+
+
+
+}
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
 dependencies {
     //kotlin
     implementation(platform(libs.kotlin.bom))
@@ -79,6 +85,16 @@ dependencies {
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
 
+    //JUnit5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.platform.console)
+    testImplementation(libs.vintage.junit.vintage.engine)
+
+    //Mockito
+    testImplementation(libs.mockito.junit.jupiter)
+    testImplementation(libs.mockito.core)
+    testImplementation(libs.mockito.kotlin)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
@@ -102,4 +118,5 @@ dependencies {
 
     //Firestore
     implementation(libs.firebase.ui.firestore)
+
 }
