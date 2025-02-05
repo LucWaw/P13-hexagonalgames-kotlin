@@ -18,14 +18,13 @@ hilt = "2.51.1"
 kotlin = "2.1.0"
 compose = "2024.04.00"
 activityCompose = "1.8.2"
-mockitoJunitJupiter = "5.14.1"
+mockk = "1.13.16"
 navigationCompose = "2.7.7"
 ksp = "2.1.0-1.0.29"
 lifecycleRuntimeCompose = "2.7.0"
 google = "4.4.2"
 firebase-crashlytics = "3.0.2"
 firebaseUI = "8.0.2"
-mockitoKotlin = "5.4.0"
 
 [libraries]
 accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanistPermissions" }
@@ -42,8 +41,6 @@ firebase-ui-firestore = { module = "com.firebaseui:firebase-ui-firestore", versi
 glide = { module = "com.github.bumptech.glide:glide", version.ref = "glide" }
 hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
-mockito-core = { module = "org.mockito:mockito-core", version.ref = "mockitoJunitJupiter" }
-mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junitJupiterApi" }
@@ -63,7 +60,7 @@ compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 compose-material3 = { group = "androidx.compose.material3", name = "material3" }
 activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-mockito-junit-jupiter = { module = "org.mockito:mockito-junit-jupiter", version.ref = "mockitoJunitJupiter" }
+mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycleRuntimeCompose" }
 vintage-junit-vintage-engine = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junitVintageEngine" }

@@ -91,10 +91,9 @@ dependencies {
     testRuntimeOnly(libs.junit.platform.console)
     testImplementation(libs.vintage.junit.vintage.engine)
 
+
     //Mockito
-    testImplementation(libs.mockito.junit.jupiter)
-    testImplementation(libs.mockito.core)
-    testImplementation(libs.mockito.kotlin)
+    testImplementation(libs.mockk)
 
     //Firebase
     implementation(platform(libs.firebase.bom))
@@ -120,3 +119,5 @@ dependencies {
     implementation(libs.firebase.ui.firestore)
 
 }
+
+
