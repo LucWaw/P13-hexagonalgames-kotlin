@@ -32,9 +32,9 @@
 
 ## ScrennShot
 
-
-![Detail Screen](images/HexagonalGames.png)
-
+<div align="center">
+    <img src="images/HexagonalGames.png" alt="DetailScreen" height="800">
+</div>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
