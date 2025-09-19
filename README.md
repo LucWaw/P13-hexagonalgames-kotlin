@@ -30,7 +30,7 @@
 
 <!-- ScreenShot -->
 
-## ScrennShot
+## ScreenShot
 
 <div align="center">
     <img src="images/HexagonalGames.png" alt="DetailScreen" height="800">
